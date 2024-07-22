@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="也是挺久没更新了，活跃也是在数创论坛活跃,同步一下我在那发的帖子吧。 Github: https:&#x2F;&#x2F;github.com&#x2F;CrashWork-Dev&#x2F;AnnoyingUtils 开源许可证: Unlicense license 关联项目: https:&#x2F;&#x2F;github.com&#x2F;cneicy&#x2F;Rouge 用法：下载后直接解压到Assets&#x2F;Scripts下。 目前拥有键盘键位自定义、自定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手搓的Unity小工具库AnnoyingUtils">
+<meta property="og:url" content="https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm">
+<meta property="og:site_name" content="ErrorLog-埃拉原木">
+<meta property="og:description" content="也是挺久没更新了，活跃也是在数创论坛活跃,同步一下我在那发的帖子吧。 Github: https:&#x2F;&#x2F;github.com&#x2F;CrashWork-Dev&#x2F;AnnoyingUtils 开源许可证: Unlicense license 关联项目: https:&#x2F;&#x2F;github.com&#x2F;cneicy&#x2F;Rouge 用法：下载后直接解压到Assets&#x2F;Scripts下。 目前拥有键盘键位自定义、自定">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-22T07:18:00.000Z">
+<meta property="article:modified_time" content="2024-07-22T07:22:58.360Z">
+<meta property="article:author" content="Eicy">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>手搓的Unity小工具库AnnoyingUtils</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="ErrorLog-埃拉原木" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">朋友</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/crash-2024-07-22_15.23.00-fml.htm"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/crash-2024-05-04_12.21.00-fml.htm"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&text=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&is_video=false&description=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=手搓的Unity小工具库AnnoyingUtils&body=Check out this article: https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&name=手搓的Unity小工具库AnnoyingUtils&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&t=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE%E4%BD%8D%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%9F%E8%83%BD"><span class="toc-number">1.</span> <span class="toc-text">键位自定义功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E6%9C%BA%E6%AF%94%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">相机比例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">对象池</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        手搓的Unity小工具库AnnoyingUtils
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Eicy</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-22T07:18:00.000Z" itemprop="datePublished">2024-07-22</time>
+        
+        (Updated: <time datetime="2024-07-22T07:22:58.360Z" itemprop="dateModified">2024-07-22</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Unity/">Unity</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Unity/" rel="tag">Unity</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>也是挺久没更新了，活跃也是在数创论坛活跃,同步一下我在那发的帖子吧。</p>
+<p>Github: <a target="_blank" rel="noopener" href="https://github.com/CrashWork-Dev/AnnoyingUtils">https://github.com/CrashWork-Dev/AnnoyingUtils</a></p>
+<p>开源许可证: <a target="_blank" rel="noopener" href="https://github.com/CrashWork-Dev/AnnoyingUtils?tab=Unlicense-1-ov-file#">Unlicense license</a></p>
+<p>关联项目: <a target="_blank" rel="noopener" href="https://github.com/cneicy/Rouge">https://github.com/cneicy/Rouge</a></p>
+<p>用法：下载后直接解压到Assets&#x2F;Scripts下。</p>
+<p>目前拥有键盘键位自定义、自定义相机比例、对象池功能。</p>
+<p>如果你有更好的解决方案或者有功能需求，欢迎你在评论区或<a target="_blank" rel="noopener" href="https://github.com/CrashWork-Dev/AnnoyingUtils/issues">Github Issues</a>留言。</p>
+<h3 id="键位自定义功能"><a href="#键位自定义功能" class="headerlink" title="键位自定义功能"></a>键位自定义功能</h3><p><em>游戏内改键</em></p>
+<p><code>KeySettingManager</code>为单例类</p>
+<p>在<code>KeySettingManager</code>的<code>LoadKeySettings()</code>中填写自己需要的键位对即可。</p>
+<p>调用<code>GetKey(string actionName)</code>获取行为对应的<code>KeyCode</code></p>
+<p>调用<code>SetKey(string actionName, KeyCode newKeyCode)</code>设置行为对应<code>KeyCode</code></p>
+<h3 id="相机比例"><a href="#相机比例" class="headerlink" title="相机比例"></a>相机比例</h3><p>将<a target="_blank" rel="noopener" href="https://github.com/CrashWork-Dev/AnnoyingUtils/blob/main/ScreenAspect/ScreenAspect.cs" title="ScreenAspect.cs">ScreenAspect.cs</a>挂载相机上即可生效</p>
+<p><code>public float TargetAspect = 16f / 9f;</code></p>
+<p>修改以上数值即可设置相机比例。</p>
+<h3 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h3><p>新建一个对象池类继承<code>SingletonObjectPool&lt;T&gt;</code>后，在UnityEditor中会自动创建以类名为名称的单例实例。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnemyPool</span> : <span class="title">SingletonObjectPool</span>&lt;<span class="title">Enemy</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法示例如下方刷怪圈</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnemySpawner</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> GameObject enemyPrefab;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> initialPoolSize = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> maxPoolSize = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> spawnInterval = <span class="number">3f</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> spawnCount = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> spawnRadius = <span class="number">5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        SingletonObjectPool&lt;Enemy&gt;.Instance.Init(enemyPrefab.GetComponent&lt;Enemy&gt;(), initialPoolSize, maxPoolSize);</span><br><span class="line">        StartCoroutine(SpawnEnemiesCoroutine());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IEnumerator <span class="title">SpawnEnemiesCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">WaitForSeconds</span>(<span class="params">spawnInterval</span>)</span>;</span><br><span class="line">            SpawnEnemies();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SpawnEnemies</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; spawnCount; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> spawnPosition = transform.position + (Vector3)Random.insideUnitCircle * spawnRadius;</span><br><span class="line">            SingletonObjectPool&lt;Enemy&gt;.Instance.Spawn(transform).transform.position = spawnPosition;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/friends/">朋友</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE%E4%BD%8D%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%9F%E8%83%BD"><span class="toc-number">1.</span> <span class="toc-text">键位自定义功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E6%9C%BA%E6%AF%94%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">相机比例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">对象池</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&text=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&is_video=false&description=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=手搓的Unity小工具库AnnoyingUtils&body=Check out this article: https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&title=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&name=手搓的Unity小工具库AnnoyingUtils&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://cneicy.github.io/crash-2024-07-22_15.18.00-fml.htm&t=手搓的Unity小工具库AnnoyingUtils"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2023-2024
+    Eicy
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">朋友</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'cneicy/cneicy.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
