@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="起因因为鱼做DCIM系统需要机器人在群内输出日志调试的需求，我就把原来给某群写的机器人Shrink改了改。 而且鱼还点名了我提供的API通过gRPC调用，所以我就去哔哩哔哩搜了一下gRPC的概念，顺带找了一下可用的nuget包。 使用首先我在原Shrink的解决方案nuget中导入了Grpc.Tools Grpc.core Grpc.Net.Client Google.Protobuf。后来得知有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gRPC使用体验">
+<meta property="og:url" content="https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm">
+<meta property="og:site_name" content="ErrorLog-埃拉原木">
+<meta property="og:description" content="起因因为鱼做DCIM系统需要机器人在群内输出日志调试的需求，我就把原来给某群写的机器人Shrink改了改。 而且鱼还点名了我提供的API通过gRPC调用，所以我就去哔哩哔哩搜了一下gRPC的概念，顺带找了一下可用的nuget包。 使用首先我在原Shrink的解决方案nuget中导入了Grpc.Tools Grpc.core Grpc.Net.Client Google.Protobuf。后来得知有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-17T10:14:00.000Z">
+<meta property="article:modified_time" content="2025-01-17T10:44:28.177Z">
+<meta property="article:author" content="Eicy">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>gRPC使用体验</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="ErrorLog-埃拉原木" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">朋友</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/crash-2024-07-22_15.23.00-fml.htm"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&text=gRPC使用体验"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&is_video=false&description=gRPC使用体验"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=gRPC使用体验&body=Check out this article: https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&name=gRPC使用体验&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&t=gRPC使用体验"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E5%9B%A0"><span class="toc-number">1.</span> <span class="toc-text">起因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        gRPC使用体验
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Eicy</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-17T10:14:00.000Z" itemprop="datePublished">2025-01-17</time>
+        
+        (Updated: <time datetime="2025-01-17T10:44:28.177Z" itemprop="dateModified">2025-01-17</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/C/">C#</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/C/" rel="tag">C#</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>因为鱼做DCIM系统需要机器人在群内输出日志调试的需求，我就把原来给某群写的机器人<a target="_blank" rel="noopener" href="https://github.com/cneicy/ShrinkSharp">Shrink</a>改了改。</p>
+<p>而且鱼还点名了我提供的API通过gRPC调用，所以我就去哔哩哔哩搜了一下gRPC的概念，顺带找了一下可用的nuget包。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>首先我在原Shrink的解决方案nuget中导入了<code>Grpc.Tools Grpc.core Grpc.Net.Client Google.Protobuf</code>。<em>后来得知有一些更新的包可以用，我现在使用的已经没有正常维护了。</em></p>
+<p>然后是定义proto文件，定义好命名空间以及Service，我放了loglevel、msgtype、data等字段，定义了一个SendData方法供远程发送需要打印的日志。</p>
+<p>同时在解决方案中添加以下内容，确保Build时能够生成相应的文件。<br><code>&lt;Protobuf Include=&quot;proto\apiService.proto&quot; GrpcServices=&quot;Server&quot; /&gt;</code></p>
+<p>之后就可以在我的Shrink这里实现。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Debugger;</span><br><span class="line"><span class="keyword">using</span> Grpc.Core;</span><br><span class="line"><span class="keyword">using</span> Shrink.Logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Shrink.Service</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ApiService</span> : <span class="title">APIService.APIServiceBase</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> Lazy&lt;ApiService&gt; _instance = <span class="keyword">new</span>(() =&gt; <span class="keyword">new</span> ApiService());</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ApiService Instance =&gt; _instance.Value;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Task&lt;DataResponse&gt; <span class="title">SendData</span>(<span class="params">DataRequest request, ServerCallContext context</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        LogManager.Instance.LogChain.LogMessage(request.Data, request.Event, request.LogLevel, request.MsgType,</span><br><span class="line">            request.Uin, request.Text);</span><br><span class="line">        <span class="keyword">var</span> response = <span class="keyword">new</span> DataResponse();</span><br><span class="line">        <span class="keyword">if</span> (LogManager.Instance.IsSent)</span><br><span class="line">        &#123;</span><br><span class="line">            response.Message = <span class="string">$&quot;已发送至: <span class="subst">&#123;request.Uin&#125;</span>。&quot;</span>;</span><br><span class="line">            response.Success = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            response.Message = <span class="string">&quot;未发送，可能的原因是信息被设置为忽略或出现其他问题。&quot;</span>;</span><br><span class="line">            response.Success = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LogManager.Instance.IsSent = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> Task.FromResult(response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>远端也足够简单，复制一下proto，设置好解决方案</p>
+<p><code>&lt;Protobuf Include=&quot;API/service.proto&quot; GrpcServices=&quot;Client&quot; /&gt;</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Debugger;</span><br><span class="line"><span class="keyword">using</span> Grpc.Net.Client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">GrpcClient</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 初始化 gRPC 客户端</span></span><br><span class="line">            <span class="keyword">using</span> <span class="keyword">var</span> channel = GrpcChannel.ForAddress(<span class="string">&quot;https://localhost:5001&quot;</span>);</span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> APIService.APIServiceClient(channel);</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            <span class="comment">// 准备请求数据</span></span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> DataRequest</span><br><span class="line">            &#123;</span><br><span class="line">                LogLevel = LogLevel.Info,</span><br><span class="line">                MsgType = MsgType.Public,</span><br><span class="line">                Uin = <span class="number">954600523</span>,</span><br><span class="line">                Data = DateTime.Now.ToString(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>),</span><br><span class="line">                Event = <span class="string">&quot;TestEvent&quot;</span>,</span><br><span class="line">                Text = <span class="string">&quot;逸一时误一世&quot;</span></span><br><span class="line">            &#125;;</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            <span class="comment">// 调用 gRPC 服务</span></span><br><span class="line">            Console.WriteLine(<span class="string">&quot;向服务端发送请求...&quot;</span>);</span><br><span class="line">            <span class="keyword">var</span> response = <span class="keyword">await</span> client.SendDataAsync(request);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 输出响应结果</span></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;收到服务端响应：<span class="subst">&#123;response.Message&#125;</span>, Success: <span class="subst">&#123;response.Success&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后Shrink启动等待远程的请求即可。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>gRPC使用起来十分简单，通过一个proto文件即可实现数据的序列化和反序列化处理，而且还能够跨语言使用。<br>如果应用在Unity，那也能手搓一个网络框架出来。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/friends/">朋友</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B7%E5%9B%A0"><span class="toc-number">1.</span> <span class="toc-text">起因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&text=gRPC使用体验"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&is_video=false&description=gRPC使用体验"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=gRPC使用体验&body=Check out this article: https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&title=gRPC使用体验"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&name=gRPC使用体验&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://cneicy.github.io/crash-2025-01-17_18.14.00-fml.htm&t=gRPC使用体验"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2023-2025
+    Eicy
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/friends/">朋友</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/cneicy">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'cneicy/cneicy.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
